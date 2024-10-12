@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack ChatBot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://cdn.iconscout.com/icon/free/png-512/free-chat-icon-download-in-svg-png-gif-file-formats--message-communication-chatting-conversation-bubble-iconly-essential-icons-pack-user-interface-2036071.png?f=webp&w=256">
+</head>
+<style>
+   body {
+    font-family: Arial, sans-serif;
+    background-image: url(https://img.freepik.com/premium-vector/chatbot-online-support-concept-with-woman-communicating-with-robot-cartoon-vector_605858-111.jpg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.chat-container {
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(70px) saturate(180%);
+    border-radius: 8px;
+    overflow: hidden;
+    animation: side 1s ease;
+}
+@keyframes side{
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+.chat-header {
+    background-color: black;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.chat-body {
+    padding: 15px;
+    height: 300px;
+    overflow-y: auto;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.chat-input button {
+    padding: 10px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.user-message {
+    text-align: right;
+}
+
+.bot-message {
+    text-align: left;
+    background-color: #e9e9e9;
+    padding: 8px;
+    border-radius: 4px;
+    display: inline-block;
+}   
+</style>
+
+
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+           <h2>Fitness Chatbot</h2>
+        </div>
+        <div class="chat-body" id="chat-body">
+             <!-- Chat messages will be displayed here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Ask a fitness question..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</body>
+<script>
+    const chatBody = document.getElementById('chat-body');
+
+function sendMessage() {
+    const userInput = document.getElementById('user-input').value.trim();
+
+    if (userInput !== '') {
+        appendMessage(userInput, 'user-message');
+        document.getElementById('user-input').value = '';
+        getBotResponse(userInput);
+    }
+}
+
+function appendMessage(text, className) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', className);
+    messageDiv.textContent = text;
+    chatBody.appendChild(messageDiv);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function getBotResponse(userInput) {
+    let response;
+
+    const fitnessResponses = {
+        "hi": "Hello! How can I assist you with your fitness queries today?",
+        "hi!": "Hello! How can I assist you with your fitness queries today?",
+        "hello": "Hi there! What fitness questions do you have for me?",
+        "hey": "Hey! I'm here to help you with your fitness needs.",
+        "help me": "Sure, I'm here to help. What do you need assistance with?",
+        "one doubt": "Go ahead, I'm here to clear your doubts!",
+        "what is fitness?": "Fitness refers to the condition of being physically fit and healthy. It involves exercises, proper diet, and adequate rest to maintain a healthy body and mind.",
+        "how can i improve my fitness?": "To improve fitness, combine regular exercise (both cardio and strength training) with a balanced diet, stay hydrated, and get enough rest.",
+        "what are the benefits of regular exercise?": "Regular exercise helps improve cardiovascular health, builds muscle, boosts mental health, increases energy levels, and aids in weight management.",
+        "how much protein do i need daily?": "The daily protein intake depends on your activity level. On average, 0.8 grams of protein per kilogram of body weight is sufficient for most people.",
+        "are carbs bad for you?": "Carbohydrates are a vital source of energy. Focus on consuming complex carbs like whole grains, fruits, and vegetables rather than refined sugars and flours.",
+        "what should i eat before a workout?": "A small meal with a balance of protein and complex carbs, such as a banana with peanut butter or oatmeal with nuts, is good before a workout.",
+        "what should i eat after a workout?": "After a workout, aim for a meal with protein and carbs to aid recovery. Examples include a protein shake with a banana or chicken with brown rice and veggies.",
+        "is intermittent fasting effective for weight loss?": "Intermittent fasting can be effective for weight loss, as it helps reduce calorie intake. However, it may not be suitable for everyone, so consult a healthcare professional.",
+       "how often should i work out?": "It is recommended to exercise at least 3-5 times a week. Mix cardio and strength training for overall fitness.",
+       "what are good exercises for weight loss?": "Cardio exercises like running, cycling, and swimming are effective for weight loss. Combining them with strength training can enhance results.",
+       "how can i build muscle?": "Building muscle requires consistent strength training, progressive overload (increasing weights over time), and a protein-rich diet.",
+       "what are the best exercises for building abs?": "Effective ab exercises include planks, crunches, bicycle crunches, and leg raises. Combine these with cardio for better results.",
+       "can i lose weight just by doing cardio?": "Cardio can help with weight loss, but combining it with strength training and a healthy diet will provide better and more sustainable results.",
+       "how much water should i drink daily?": "It is recommended to drink at least 8 cups (2 liters) of water a day. Adjust according to your activity level, climate, and personal needs.",
+       "what are the benefits of staying hydrated?": "Staying hydrated helps maintain body temperature, lubricates joints, delivers nutrients to cells, and improves overall bodily functions.",
+       "what are the signs of dehydration?": "Signs of dehydration include thirst, dry mouth, dark urine, dizziness, fatigue, and confusion. It's important to drink water regularly.",
+       "how important is sleep for fitness?": "Sleep is crucial for fitness as it allows the body to recover, repair muscle tissue, and replenish energy levels. Aim for 7-9 hours of quality sleep per night.",
+       "how can i improve my sleep quality?": "To improve sleep quality, establish a regular sleep schedule, create a relaxing bedtime routine, reduce caffeine intake, and keep your sleep environment comfortable.",
+       "can exercise improve sleep?": "Yes, regular exercise can help improve sleep quality and duration. However, avoid vigorous exercise too close to bedtime, as it may be stimulating.",
+       "what are the benefits of yoga?": "Yoga improves flexibility, strength, balance, and posture. It also reduces stress, promotes relaxation, and enhances mental clarity.",
+       "how often should i do yoga?": "Practicing yoga 2-3 times a week can provide significant benefits. Adjust the frequency based on your goals and how your body feels.",
+        "what is the best time to do yoga?": "The best time to do yoga is whenever it fits into your schedule and allows you to practice consistently. Some prefer morning sessions, while others prefer evenings.",
+        "how does exercise affect mental health?": "Exercise releases endorphins, which are natural mood lifters. It reduces stress, anxiety, and depression, and boosts overall mental well-being.",
+        "can exercise help with stress relief?": "Yes, regular physical activity can reduce levels of the body's stress hormones and stimulate the production of endorphins, which are mood elevators.",
+        "what is a good workout routine for beginners?": "A good beginner routine includes 3 days of full-body strength training and 2-3 days of cardio. Start with light weights and gradually increase as you get stronger.",
+        "how do i stay motivated to work out?": "Set realistic goals, track your progress, find a workout buddy, and choose activities you enjoy. Consistency is key to long-term success.",
+        "what are common fitness myths?": "Common fitness myths include 'spot reduction is possible', 'lifting weights makes women bulky', and 'more sweat means more fat loss'. Focus on overall fitness rather than myths.",
+        "what is a healthy diet?": "A healthy diet includes a variety of fruits, vegetables, whole grains, and lean proteins. Avoid processed foods and excessive sugars.",
+        "how often should i exercise?": "It's recommended to exercise at least 30 minutes a day, 5 days a week. Include both cardio and strength training in your routine.",
+        "what are good exercises for weight loss?": "Cardio exercises like running, cycling, and swimming are great for weight loss. Combine them with strength training for better results.",
+        "how much water should i drink daily?": "It is generally recommended to drink at least 8 cups (2 liters) of water a day. Adjust according to your activity level and climate.",
+        "what are the benefits of yoga?": "Yoga improves flexibility, strength, and balance. It also reduces stress and promotes relaxation.",
+        "how can i build muscle?": "To build muscle, focus on resistance training with weights and eat a protein-rich diet. Consistency is key.",
+        "what is the best time to workout?": "The best time to workout is whenever you can be consistent. Some prefer morning workouts, while others like evenings.",
+         // Stretching and Warm-Up
+        "why is stretching important?": "Stretching improves flexibility, increases blood flow to the muscles, and helps prevent injury. It also reduces muscle tension and enhances your range of motion.",
+        "how long should i warm up before exercising?": "A proper warm-up should last about 5-10 minutes. Include light cardio like jogging or jumping jacks, followed by dynamic stretches.",
+        "what are some good stretching exercises?": "Some effective stretches include hamstring stretches, calf stretches, shoulder stretches, and quadriceps stretches. Always hold each stretch for at least 20-30 seconds.",
+        "Thank You": "You're Welcome!",
+        "thankyou": "You're Welcome!",
+        "thank you": "You're Welcome!",
+         // Weight Loss and Plateaus
+        "why am i not losing weight?": "Weight loss can plateau due to various reasons, such as not varying your workout routine, eating more calories than burned, or hormonal imbalances. Try mixing up your exercises and monitoring your diet.",
+        "what should i do if i hit a weight loss plateau?": "If you hit a plateau, try changing your workout routine, increasing your exercise intensity, monitoring your diet closely, or consulting with a fitness professional.",
+        "how can i measure my body fat percentage?": "You can measure body fat percentage using tools like skinfold calipers, bioelectrical impedance scales, DEXA scans, or visiting a fitness center for professional assessment.",
+
+        // Fitness Gear and Equipment
+        "do i need a gym membership to get fit?": "No, you don't need a gym membership to get fit. Bodyweight exercises, running, cycling, and using basic equipment like dumbbells and resistance bands can be effective at home.",
+        "what equipment do i need for home workouts?": "For effective home workouts, consider basic equipment like a yoga mat, dumbbells, resistance bands, a jump rope, and a stability ball.",
+        "are fitness trackers useful?": "Fitness trackers can be very useful for monitoring your activity levels, heart rate, sleep patterns, and even calorie intake. They can help you stay motivated and track your progress.",
+
+        // Workout Safety and Injury Prevention
+    "how can i prevent injuries during workouts?": "To prevent injuries, always warm up properly, use correct form, don't overdo it, listen to your body, and cool down after workouts. Gradually increase your workout intensity.",
+    "what should i do if i feel pain during a workout?": "If you feel pain during a workout, stop immediately. Rest the affected area and consult a healthcare professional if the pain persists or is severe.",
+    "how important is proper form in exercise?": "Proper form is crucial to prevent injuries and to ensure that you're effectively targeting the intended muscle groups. Always focus on technique over the amount of weight lifted.",
+
+    // Cardio and Endurance
+    "how can i improve my endurance?": "To improve endurance, engage in regular cardio exercises like running, swimming, or cycling. Gradually increase the duration and intensity of your workouts.",
+    "what is high-intensity interval training (hiit)?": "HIIT involves short bursts of intense exercise followed by rest or low-intensity periods. It's effective for burning calories, improving cardiovascular health, and increasing endurance.",
+    "how often should i do cardio?": "For general health, aim for at least 150 minutes of moderate-intensity cardio or 75 minutes of high-intensity cardio per week, spread over several days.",
+
+    // Strength and Conditioning
+    "what is strength training?": "Strength training involves exercises that improve muscle strength and endurance. It typically includes using weights, resistance bands, or bodyweight exercises like push-ups and squats.",
+    "how many sets and reps should i do?": "For general strength, 3-4 sets of 8-12 reps is common. For muscle endurance, do more reps (15-20) with lighter weights. For building maximum strength, aim for fewer reps (3-6) with heavier weights.",
+    "what are compound exercises?": "Compound exercises work multiple muscle groups at once, such as squats, deadlifts, bench presses, and pull-ups. They are efficient for building strength and burning calories.",
+
+    // Fitness Motivation and Goals
+    "how can i stay consistent with my workouts?": "Set realistic goals, create a workout schedule, track your progress, find a workout buddy, and choose activities you enjoy. Consistency is key to success.",
+    "what is a realistic fitness goal?": "A realistic goal might be to exercise 3 times a week, run a 5k in a few months, or lose 1-2 pounds per week. Set specific, measurable, achievable, relevant, and time-bound (SMART) goals.",
+    "how long does it take to see results from working out?": "Results vary, but most people start noticing changes in strength and endurance within 4-6 weeks. Visible changes in body composition may take 8-12 weeks, depending on consistency and diet.",
+
+    // Fitness Myths and Facts
+    "is weight lifting bad for women?": "No, weight lifting is not bad for women. It helps improve strength, bone density, and body composition. It won't make women 'bulky' but rather toned and strong.",
+    "does muscle turn into fat if i stop exercising?": "Muscle and fat are different tissues; muscle does not turn into fat. However, if you stop exercising and maintain a high-calorie intake, muscle mass can decrease and fat can accumulate.",
+    "is it better to work out in the morning or evening?": "Both times have benefits. Morning workouts can boost your metabolism and energy for the day, while evening workouts might benefit those with more strength and energy later in the day. Choose what fits your schedule.",
+
+    };
+
+    userInput = userInput.toLowerCase();
+    response = fitnessResponses[userInput] || "Sorry, I don't understand that. Can you ask something else?";
+
+    appendMessage(response, 'bot-message');
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+</script>
+</html>

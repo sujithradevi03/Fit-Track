@@ -1,0 +1,145 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#navbar{
+    top: 0;
+    left: 0;
+    z-index: 100;
+    position: inherit;
+    padding: .5rem 5rem;
+    background-color: rgb(192, 192, 192) !important;
+}
+#navbar .navbar-brand{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 600;
+    color:black;
+}
+#navbarSupportedContent .nav-link{
+    color:black !important;
+    font-weight: 550;
+}
+#navbarSupportedContent .nav-link:hover{
+    border-bottom: 1px solid black;
+}
+img:hover{
+          transform: scale(1.1);
+          transition: .5s;
+        }
+/****Home*****/
+
+section{
+    padding-top: 25px;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#home{
+    background-image: url(https://thumbs.dreamstime.com/b/fitness-bodybuilding-background-dumbbells-gym-floor-top-view-fitness-bodybuilding-concept-background-product-photograph-107776956.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+#home h1{
+    font-weight: 750;
+    color: black !important;
+    text-shadow: 1px 0px 1px white,
+                 2px 0px 2px white,
+                 3px 0px 3px white;
+}
+
+#home p{
+    margin:60px;
+    font-weight: 550;
+    color: white;
+    text-shadow: 1px 0px 1px black,
+                 2px 0px 2px black;
+}
+
+h2{
+    padding-top: 120px !important;
+    letter-spacing: 3px;
+    text-shadow: 1px 0px 1px white,
+                 2px 0px 2px white;
+    color:black;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-weight: 750;
+    padding-bottom: 100px;
+}
+
+#feature {
+    padding-left: 120px;
+    padding-right: 120px;
+    padding-bottom: 70px;
+}
+
+
+/*****Footer*******/
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.footer-section {
+    flex: 1 1 200px;
+    margin: 10px;
+}
+
+.footer-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.footer-section p,
+.footer-section a {
+    font-size: 14px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+.social-media-links {
+    display: flex;
+    justify-content: center;
+}
+
+.social-media-links a {
+    margin: 0 10px;
+}
+
+.social-media-links img {
+    width: 24px;
+    height: 24px;
+}
+
+.footer-bottom {
+    background-color: #222;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 14px;
+}
